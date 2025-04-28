@@ -41,5 +41,5 @@ extern "C" void _xovi_construct() {
         abort();
     }
 
-    qDebug() << "Loading rmfakecloud by Tiebe. Using host " << 
+    qDebug() << "Loading rmfakecloud by Tiebe. Using host " << host;
 }
