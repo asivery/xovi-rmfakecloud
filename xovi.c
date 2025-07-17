@@ -67,7 +67,7 @@ extern void override$_ZN21QNetworkAccessManager13createRequestENS_9OperationERK1
 __attribute__((section(".xovi"))) const char *LINKTABLENAMES = "C_ZN21QNetworkAccessManager13createRequestENS_9OperationERK15QNetworkRequestP9QIODevice\0I_ZN21QNetworkAccessManager13createRequestENS_9OperationERK15QNetworkRequestP9QIODevice\0O_ZN21QNetworkAccessManager13createRequestENS_9OperationERK15QNetworkRequestP9QIODevice\0\0";
 __attribute__((section(".xovi"))) const void *LINKTABLEVALUES[] = { (void *) 3, (void *) 0, (void *) 0, (void *) override$_ZN21QNetworkAccessManager13createRequestENS_9OperationERK15QNetworkRequestP9QIODevice };
 __attribute__((section(".xovi"))) const void *Environment = 0;
-__attribute__((section(".xovi_info"))) const int EXTENSIONVERSION = 65536;
+__attribute__((section(".xovi_info"))) const int EXTENSIONVERSION = 65537;
 
 __attribute__((section(".xovi_info"))) const char __XOVIMETADATANAMES[] = "";
 

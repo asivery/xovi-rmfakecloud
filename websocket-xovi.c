@@ -67,7 +67,7 @@ extern void override$_ZN10QWebSocket4openERK15QNetworkRequest();
 __attribute__((section(".xovi"))) const char *LINKTABLENAMES = "C_ZN10QWebSocket4openERK15QNetworkRequest\0I_ZN10QWebSocket4openERK15QNetworkRequest\0O_ZN10QWebSocket4openERK15QNetworkRequest\0\0";
 __attribute__((section(".xovi"))) const void *LINKTABLEVALUES[] = { (void *) 3, (void *) 0, (void *) 0, (void *) override$_ZN10QWebSocket4openERK15QNetworkRequest };
 __attribute__((section(".xovi"))) const void *Environment = 0;
-__attribute__((section(".xovi_info"))) const int EXTENSIONVERSION = 65536;
+__attribute__((section(".xovi_info"))) const int EXTENSIONVERSION = 65537;
 
 __attribute__((section(".xovi_info"))) const char __XOVIMETADATANAMES[] = "";
 
