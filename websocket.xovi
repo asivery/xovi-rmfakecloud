@@ -1,0 +1,4 @@
+version 1.0.0
+
+import? _ZN10QWebSocket4openERK15QNetworkRequest
+override _ZN10QWebSocket4openERK15QNetworkRequest
