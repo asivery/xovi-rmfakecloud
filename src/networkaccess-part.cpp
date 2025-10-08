@@ -12,24 +12,27 @@ extern "C" QNetworkReply* override$_ZN21QNetworkAccessManager13createRequestENS_
     const QNetworkRequest& req,
     QIODevice* outgoingData
 ) {
-    // set new url
-    QUrl newUrl = req.url();
-    newUrl.setHost(newRMFCHostName);
-    newUrl.setPort(newRMFCPort);
-
-    // create a new request, so we don't have to modify the original request
-    QNetworkRequest newReq(req);
-    newReq.setUrl(newUrl);
-
-    // get original function signature
     using CreateFn = QNetworkReply*(*)(QNetworkAccessManager*,
-                            QNetworkAccessManager::Operation,
-                            const QNetworkRequest&,
-                            QIODevice*);
+                        QNetworkAccessManager::Operation,
+                        const QNetworkRequest&,
+                        QIODevice*);
     CreateFn orig = reinterpret_cast<CreateFn>(
         $_ZN21QNetworkAccessManager13createRequestENS_9OperationERK15QNetworkRequestP9QIODevice
     );
 
-    // call original function, and return the result
-    return orig(self, op, newReq, outgoingData);
+    if(shouldPatchURL(req.url().host())) {
+        // set new url
+        QUrl newUrl = req.url();
+        newUrl.setHost(newRMFCHostName);
+        newUrl.setPort(newRMFCPort);
+
+        // create a new request, so we don't have to modify the original request
+        QNetworkRequest newReq(req);
+        newReq.setUrl(newUrl);
+
+        // call original function, and return the result
+        return orig(self, op, newReq, outgoingData);
+    } else {
+        return orig(self, op, req, outgoingData);
+    }
 }

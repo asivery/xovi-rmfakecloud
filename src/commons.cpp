@@ -16,10 +16,10 @@ extern "C" void _xovi_construct() {
     QSettings extensionConfig(configFile, QSettings::IniFormat);
     QString newRMFCHostNameQStr = extensionConfig.value("host").toString();
     if (newRMFCHostNameQStr == "") {
-        std::cerr << "[" << NAME << "] No host defined in the config file!";
+        std::cerr << "[" << NAME << "] No host defined in the config file!" << std::endl;
         abort();
     }
-    std::cerr << "[" << NAME << "] New host set to: " << newRMFCHostNameQStr.toStdString();
+    std::cerr << "[" << NAME << "] New host set to: " << newRMFCHostNameQStr.toStdString() << std::endl;
     newRMFCHostName = newRMFCHostNameQStr;
     bool ok;
     newRMFCPort = extensionConfig.value("port").toInt(&ok);
@@ -38,8 +38,26 @@ extern "C" void _xovi_construct() {
         config.setCaCertificates(globalCerts);
         QSslConfiguration::setDefaultConfiguration(config);
     } else {
-        std::cerr << "[" << NAME << "] Failed to open CA file!";
+        std::cerr << "[" << NAME << "] Failed to open CA file!" << std::endl;
     }
 
     free(configRoot);
+}
+
+static inline bool shouldPatchURL(const QString &host) {
+    return QString(R""""(
+        hwr-production-dot-remarkable-production.appspot.com
+        service-manager-production-dot-remarkable-production.appspot.com
+        local.appspot.com
+        my.remarkable.com
+        ping.remarkable.com
+        internal.cloud.remarkable.com
+        eu.tectonic.remarkable.com
+        backtrace-proxy.cloud.remarkable.engineering
+        dev.ping.remarkable.com
+        dev.tectonic.remarkable.com
+        dev.internal.cloud.remarkable.com
+        eu.internal.tctn.cloud.remarkable.com
+        webapp-prod.cloud.remarkable.engineering
+    )"""").contains(host);
 }
