@@ -1,4 +1,5 @@
-version 1.0.1
+version 1.1.0
 
 import? _ZN21QNetworkAccessManager13createRequestENS_9OperationERK15QNetworkRequestP9QIODevice
 override _ZN21QNetworkAccessManager13createRequestENS_9OperationERK15QNetworkRequestP9QIODevice
+

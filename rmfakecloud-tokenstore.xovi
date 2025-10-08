@@ -1,0 +1,8 @@
+version 1.1.0
+
+import? _ZNK9QSettings5valueE14QAnyStringViewRK8QVariant>QVariant
+override _ZNK9QSettings5valueE14QAnyStringViewRK8QVariant
+import? _ZNK9QSettings5valueE14QAnyStringView>QVariant
+override _ZNK9QSettings5valueE14QAnyStringView
+import? _ZN9QSettings8setValueE14QAnyStringViewRK8QVariant
+override _ZN9QSettings8setValueE14QAnyStringViewRK8QVariant

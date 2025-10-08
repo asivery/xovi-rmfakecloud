@@ -1,0 +1,8 @@
+xovi-websocket.cpp
+xovi-websocket.h
+xovi-networkaccess.h
+xovi-networkaccess.cpp
+xovi-tokenstore.h
+xovi-tokenstore.cpp
+*.o
+*.so
