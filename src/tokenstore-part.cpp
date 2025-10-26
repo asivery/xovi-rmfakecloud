@@ -27,12 +27,12 @@ extern "C" {
     }
 
     QVariant override$_ZNK9QSettings5valueE14QAnyStringView(void *that, QAnyStringView key) {
-        checkKey(&that, key);
+        if(checkKey(&that, key)) tokenStorage->sync();
         return $_ZNK9QSettings5valueE14QAnyStringView(that, key);
     }
 
     QVariant override$_ZNK9QSettings5valueE14QAnyStringViewRK8QVariant(void *that, QAnyStringView key, const QVariant &defaultValue) {
-        checkKey(&that, key);
+        if(checkKey(&that, key)) tokenStorage->sync();
         return $_ZNK9QSettings5valueE14QAnyStringViewRK8QVariant(that, key, defaultValue);
     }
 
