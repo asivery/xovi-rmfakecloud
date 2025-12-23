@@ -23,6 +23,7 @@ EOF
 mkdir -p /etc/systemd/system/rm-sync.service.d
 mount -t tmpfs tmpfs /etc/systemd/system/rm-sync.service.d
 cat << END > etc/systemd/system/rm-sync.service.d/xovi.conf
+[Service]
 Environment="XOVI_ROOT=/home/root/xovi/roots/rmfakecloud"
 Environment="LD_PRELOAD=/home/root/xovi/xovi.so"
 Environment="QML_DISABLE_DISK_CACHE=1"
