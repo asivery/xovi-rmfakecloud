@@ -36,3 +36,19 @@ extern "C" QNetworkReply* override$_ZN21QNetworkAccessManager13createRequestENS_
         return orig(self, op, req, outgoingData);
     }
 }
+
+extern "C" void override$_ZN15QNetworkRequest6setUrlERK4QUrl(void *self, const QUrl &url) {
+    using SetUrl = void(*)(void *, const QUrl &);
+    SetUrl orig = reinterpret_cast<SetUrl>(
+        $_ZN15QNetworkRequest6setUrlERK4QUrl
+    );
+    if(shouldPatchURL(url.host())) {
+        std::cout << "SeturlPart: Set " << url.host().toStdString() << " to " << newRMFCHostName.toStdString() << std::endl;
+        QUrl newUrl(url);
+        newUrl.setHost(newRMFCHostName);
+        newUrl.setPort(newRMFCPort);
+        orig(self, newUrl);
+    } else {
+        orig(self, url);
+    }
+}
