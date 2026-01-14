@@ -59,5 +59,5 @@ static inline bool shouldPatchURL(const QString &host) {
         dev.internal.cloud.remarkable.com
         eu.internal.tctn.cloud.remarkable.com
         webapp-prod.cloud.remarkable.engineering
-    )"""").contains(host);
+    )"""").contains(host) && !host.isEmpty();
 }
