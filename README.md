@@ -10,7 +10,7 @@ This is an xovi module for using a self hosted rM cloud with xochitl. It functio
 - Run the following commands on the tablet via SSH (assuming CWD is /home/root):
 ```bash
 mkdir -p xovi/roots/rmfakecloud/extensions.d
-ln -rs xovi/exthome xovi/roots/rmfakecloud/exthome
+ln -s /home/root/xovi/exthome xovi/roots/rmfakecloud/exthome
 mkdir xovi/exthome/rmfakecloud
 cat << EOF > xovi/exthome/rmfakecloud/config.conf
 host=<your domain>
@@ -22,7 +22,7 @@ EOF
 ```
 mkdir -p /etc/systemd/system/rm-sync.service.d
 mount -t tmpfs tmpfs /etc/systemd/system/rm-sync.service.d
-cat << END > etc/systemd/system/rm-sync.service.d/xovi.conf
+cat << END > /etc/systemd/system/rm-sync.service.d/xovi.conf
 [Service]
 Environment="XOVI_ROOT=/home/root/xovi/roots/rmfakecloud"
 Environment="LD_PRELOAD=/home/root/xovi/xovi.so"
