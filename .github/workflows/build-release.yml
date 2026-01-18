@@ -48,9 +48,10 @@ jobs:
           export XOVI_REPO=/tmp/xovi
           git clone https://github.com/asivery/xovi $XOVI_REPO
           bash -c ". /opt/codex/*/*/environment-setup-*; make"
-          cp *.so output/xovi/extensions.d
-          cp *.so output/xovi/services/rm-sync.service/extensions.d
-          tar -czf xovi-rmfakecloud.tar.gz output/*
+          cd output
+          cp ../*.so xovi/extensions.d
+          cp ../*.so xovi/services/rm-sync.service/extensions.d
+          tar -czf ../xovi-rmfakecloud.tar.gz *
 
       - name: Upload build artifact
         uses: actions/upload-artifact@v4
