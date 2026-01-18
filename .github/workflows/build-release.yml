@@ -39,8 +39,8 @@ jobs:
           mkdir -p exthome/rmfakecloud
           echo -e "host=<your domain>\nport=443" > exthome/rmfakecloud/config.conf
           mkdir -p services/rm-sync.service
-          mkdir -p services/rm-sync.service/extensions.d
-          ln -s /home/root/xovi/exthome services/rm-sync.service/exthome
+          mkdir -p services/rm-sync.service/{extensions.d,exthome}
+          ln -s /home/root/xovi/exthome/rmfakecloud services/rm-sync.service/exthome/rmfakecloud
           cd ../..
       
       - name: Build extension
