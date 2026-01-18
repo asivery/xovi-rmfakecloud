@@ -1,0 +1,103 @@
+name: Build and upload releases
+
+on:
+  push:
+    tags:
+      - "*"
+
+jobs:
+  build:
+    strategy:
+      matrix:
+        os:
+          [
+            "eeems/remarkable-toolchain:latest-rmpp",
+            "eeems/remarkable-toolchain:latest-rm2",
+          ]
+        include:
+          - os: "eeems/remarkable-toolchain:latest-rmpp"
+            release_arch: aarch64
+          - os: "eeems/remarkable-toolchain:latest-rm2"
+            release_arch: arm32
+    runs-on: ubuntu-latest
+
+    container:
+      image: ${{ matrix.os }}
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+        with:
+          submodules: true
+
+      - name: Setup release folder structure
+        shell: bash
+        run: |
+          mkdir -p output/xovi
+          cd output/xovi
+          mkdir -p {extensions.d,exthome,services}
+          mkdir -p exthome/rmfakecloud
+          echo -e "host=<your domain>\nport=443" > exthome/rmfakecloud/config.conf
+          mkdir -p services/rm-sync.service
+          mkdir -p services/rm-sync.service/{extensions.d,exthome}
+          ln -s /home/root/xovi/exthome/rmfakecloud services/rm-sync.service/exthome/rmfakecloud
+          cd ../..
+      
+      - name: Build extension
+        run: |
+          export XOVI_REPO=/tmp/xovi
+          git clone https://github.com/asivery/xovi $XOVI_REPO
+          bash -c ". /opt/codex/*/*/environment-setup-*; make"
+          mv rmfakecloud_ns.so rmfakecloud_ts.so rmfakecloud_ws.so output/xovi/extensions.d/
+          cd output/xovi/services/rm-sync.service/extensions.d
+          ln -s /home/root/xovi/extensions.d/rmfakecloud_ns.so rmfakecloud_ns.so
+          ln -s /home/root/xovi/extensions.d/rmfakecloud_ts.so rmfakecloud_ts.so
+          ln -s /home/root/xovi/extensions.d/rmfakecloud_ws.so rmfakecloud_ws.so
+          cd ../../../..
+          tar -czf ../xovi-rmfakecloud.tar.gz *
+
+      - name: Upload build artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: xovi-rmfakecloud-${{ matrix.release_arch }}
+          path: xovi-rmfakecloud.tar.gz
+
+  release:
+    runs-on: ubuntu-latest
+    needs: build
+    steps:
+      - name: Download build artifacts
+        uses: actions/download-artifact@v4
+        with:
+          path: ./
+
+      - name: Create release
+        uses: actions/create-release@v1
+        id: create_release_step
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          draft: false
+          prerelease: false
+          release_name: ${{ github.event.release.tag_name }}
+          tag_name: ${{ github.ref }}
+
+      - name: Upload release assets (aarch64)
+        uses: actions/upload-release-asset@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          upload_url: ${{ steps.create_release_step.outputs.upload_url }}
+          asset_path: xovi-rmfakecloud-aarch64/xovi-rmfakecloud.tar.gz
+          asset_name: xovi-rmfakecloud-aarch64.tar.gz
+          asset_content_type: application/octet-stream
+
+      - name: Upload release assets (arm32)
+        uses: actions/upload-release-asset@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          upload_url: ${{ steps.create_release_step.outputs.upload_url }}
+          asset_path: xovi-rmfakecloud-arm32/xovi-rmfakecloud.tar.gz
+          asset_name: xovi-rmfakecloud-arm32.tar.gz
+          asset_content_type: application/octet-stream

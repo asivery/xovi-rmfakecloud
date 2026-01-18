@@ -1,34 +1,36 @@
 # rmfakecloud XOVI Module
 
-This is an xovi module for using a self hosted rM cloud with xochitl. It functions by overriding the Qt functions that are used to connect to the internet, and swapping them to instead point to the rmfakecloud instance, should the old URL point to reMarkable's services.
+This is an xovi module for using a self hosted rM cloud with xochitl. It
+functions by overriding the Qt functions that are used to connect to the
+internet, and swapping them to instead point to the rmfakecloud instance,
+should the old URL point to reMarkable's services.
 
-## Setup
+# Setup
 
-> [!CAUTION]
-> Make sure to unpair from the cloud on your reMarkable before running these steps. Failing to do so will remove all your files when pairing to your self-hosted cloud.
+> [!CAUTION] Make sure to unpair from the cloud on your reMarkable before
+> running these steps. Failing to do so will remove all your files when pairing
+> to your self-hosted cloud.
 
-- Run the following commands on the tablet via SSH (assuming CWD is /home/root):
+**This requires [rm-xovi-extensions](https://github.com/asivery/rm-xovi-extensions) v18+.**
+
+Download the latest release:
+
+- [rM1/rM2](https://github.com/asivery/xovi-rmfakecloud/releases/latest/download/xovi-rmfakecloud-arm32.tar.gz)
+- [rMPP/rMPPM](https://github.com/asivery/xovi-rmfakecloud/releases/latest/download/xovi-rmfakecloud-aarch64.tar.gz)
+
+Copy it onto the device, into `/tmp/xovi-rmfakecloud.tar.gz`.
+
+Extract the archive (on the tablet):
+
 ```bash
-mkdir -p xovi/roots/rmfakecloud/extensions.d
-ln -s /home/root/xovi/exthome xovi/roots/rmfakecloud/exthome
-mkdir xovi/exthome/rmfakecloud
-cat << EOF > xovi/exthome/rmfakecloud/config.conf
+tar -xzvf /tmp/xovi-rmfakecloud.tar.gz -C /home/root
+```
+
+Set your domain and port:
+
+```bash
+cat << EOF > /home/root/xovi/exthome/rmfakecloud/config.conf
 host=<your domain>
 port=443
 EOF
 ```
-- Copy the three .SO files into both `xovi/extensions.d` and `xovi/roots/rmfakecloud/extensions.d`
-- Edit `xovi/start` and add the following code instead of `systemctl daemon-reload`:
-```
-mkdir -p /etc/systemd/system/rm-sync.service.d
-mount -t tmpfs tmpfs /etc/systemd/system/rm-sync.service.d
-cat << END > /etc/systemd/system/rm-sync.service.d/xovi.conf
-[Service]
-Environment="XOVI_ROOT=/home/root/xovi/roots/rmfakecloud"
-Environment="LD_PRELOAD=/home/root/xovi/xovi.so"
-Environment="QML_DISABLE_DISK_CACHE=1"
-END
-systemctl daemon-reload
-systemctl restart rm-sync
-```
-- Edit `xovi/stock` - at the start of the file add `rm /etc/systemd/system/rm-sync.service.d/xovi.conf` at the start and `systemctl restart rm-sync` at the end
