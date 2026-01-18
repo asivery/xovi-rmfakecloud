@@ -49,7 +49,7 @@ jobs:
           git clone https://github.com/asivery/xovi $XOVI_REPO
           bash -c ". /opt/codex/*/*/environment-setup-*; make"
           cd output
-          cp ../rmfakecloud_ns.so ../rmfakecloud_ts.so ../ rmfakecloud_ws.so xovi/extensions.d/
+          cp ../rmfakecloud_ns.so ../rmfakecloud_ts.so ../rmfakecloud_ws.so xovi/extensions.d/
           ln -s /home/root/xovi/extensions.d/rmfakecloud_ns.so services/rm-sync.service/extensions.d/rmfakecloud_ns.so
           ln -s /home/root/xovi/extensions.d/rmfakecloud_ts.so services/rm-sync.service/extensions.d/rmfakecloud_ts.so
           ln -s /home/root/xovi/extensions.d/rmfakecloud_ws.so services/rm-sync.service/extensions.d/rmfakecloud_ws.so
